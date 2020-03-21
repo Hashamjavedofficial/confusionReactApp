@@ -29,11 +29,9 @@ function RenderComments({ x }) {
 }
 const DishDetails = props => {
   if (!props.dish) return <div></div>;
-
   const comments = props.dish.comments.map(x => {
     return <RenderComments x={x} />;
   });
-
   return (
     <div className="container">
       <div className="row">
@@ -48,5 +46,4 @@ const DishDetails = props => {
     </div>
   );
 };
-
 export default DishDetails;
