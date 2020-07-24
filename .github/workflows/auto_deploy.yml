@@ -25,9 +25,8 @@ jobs:
       uses: actions/setup-node@v2-beta
       with:
         node-version: 12
-    
-    - name: Installing pakages
-      run: npm install
+    - run: npm install
+ 
     - name: Create build
       run: npm run build
       
