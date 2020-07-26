@@ -141,7 +141,7 @@ function RenderDish({ dish }) {
   if (dish != null) {
     return (
       <Card className="col-12 col-md-5 m-1">
-        <CardImg top src={dish.image} alt={dish.name} />
+        <CardImg top src={"/assets/" + dish.image} alt={dish.name} />
         <CardBody>
           <CardTitle>
             <strong>{dish.name}</strong>
@@ -199,6 +199,14 @@ const DishDetail = (props) => {
       <div className="container">
         <div className="row">
           <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    );
+  } else if (props.commentsError) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.commentsError}</h4>
         </div>
       </div>
     );
