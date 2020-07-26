@@ -2,15 +2,33 @@ import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
 import axios from "axios";
 
-export const addComment = (dishId, rating, author, comment) => ({
+const addComment = (comment) => ({
   type: ActionTypes.ADD_COMMENT,
   payload: {
-    dishId: dishId,
-    rating: rating,
-    author: author,
-    comment: comment,
+    comment,
   },
 });
+
+export const postComment = (dishId, rating, author, comment) => {
+  return (dispatch) => {
+    const newComment = {
+      dishId: dishId,
+      rating: rating,
+      author: author,
+      comment: comment,
+    };
+    newComment.date = new Date().toISOString();
+    axios
+      .post(baseUrl + "comments", newComment)
+      .then((response) => {
+        console.log(response.data);
+        dispatch(addComment(response.data));
+      })
+      .catch((error) => {
+        dispatch(commentsFailed(error.message));
+      });
+  };
+};
 export const fetchDishes = () => {
   return (dispatch) => {
     dispatch(dishesLoading(true));
@@ -104,6 +122,58 @@ export const fetchPromos = () => {
       })
       .catch((error) => {
         dispatch(promoFailed(error.message));
+      });
+  };
+};
+
+const addLeaders = (leaders) => {
+  return {
+    type: ActionTypes.ADD_LEADERS,
+    payload: {
+      leaders,
+    },
+  };
+};
+
+const leaderLoading = (status) => {
+  return {
+    type: ActionTypes.LEADER_LOADING,
+    payload: {
+      status,
+    },
+  };
+};
+const leaderFailed = (error) => {
+  return {
+    type: ActionTypes.LEADER_FAILED,
+    payload: {
+      error,
+    },
+  };
+};
+export const fetchLeaders = () => {
+  return (dispatch) => {
+    dispatch(leaderLoading(true));
+    axios
+      .get(baseUrl + "leaders")
+      .then((response) => {
+        dispatch(addLeaders(response.data));
+      })
+      .catch((error) => {
+        dispatch(leaderFailed(error.message));
+      });
+  };
+};
+
+export const postFeedback = (feedback) => {
+  return (dispatch) => {
+    axios
+      .post(baseUrl + "feedback", feedback)
+      .then((response) => {
+        alert(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        alert(error.message);
       });
   };
 };
